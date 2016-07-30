@@ -23,7 +23,7 @@ namespace Linq_XML
         public Bank Bank { get; set; }
         public override string ToString()
         {
-            return $"{Lastname} {Name} {Middlename}, {Birthday}, {Bank}";
+            return $"{Lastname} {Name} {Middlename}, {Birthday}, {Bank.Name}";
         }
 
        public string GetClientInfo()

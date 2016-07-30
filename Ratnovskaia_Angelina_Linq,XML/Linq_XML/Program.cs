@@ -14,39 +14,21 @@ namespace Linq_XML
         static IEnumerable<object> Search(string s, List<Bank> banks, List<Client> clients)
         {
             if (s != null)
-            {
-               
-
-                var clientLastnameQuery =
+            {              
+                var queryClients =
                      from cl in clients
-                     where (cl.Lastname.Contains(s))
+                     where (cl.Lastname.Contains(s)||cl.Name.Contains(s)||(cl.Middlename != null && cl.Middlename.Contains(s)))
                      select cl;
-                if (clientLastnameQuery.Any()) return clientLastnameQuery;
-               
+
+                if (!queryClients.Any())
                 {
-                    var clientNameQuery =
-                     from cl in clients
-                     where (cl.Name.Contains(s))
-                     select cl;
-                    if (clientNameQuery.Any()) return clientNameQuery;
-
-                       
-                    {
-                        var clientMiddlenameQuery =
-                     from cl in clients
-                     where (cl.Middlename!=null&&cl.Middlename.Contains(s))
-                     select cl;
-
-                        if (clientMiddlenameQuery.Any()) return clientMiddlenameQuery;
-                        {
-                            var bankQuery =
-                                from bank in banks
-                                where (bank.Name.Contains(s))
-                                select bank;
-                            return bankQuery;
-                        }
-                    }
+                    var queryBanks =
+                        from bank in banks
+                        where (bank.Name.Contains(s))
+                        select bank;
+                    return queryBanks;
                 }
+                return queryClients;
 
             }
             return null;
@@ -88,15 +70,17 @@ namespace Linq_XML
                 }
             }
 
-            var s = Console.ReadLine().Trim();
-            var result = Search(s, banks, clients);
-
-            foreach (var item in result)
+            var readLine = Console.ReadLine();
+            if (readLine != null)
             {
-                Console.WriteLine(item);
+                var s = readLine.Trim();
+                var result = Search(s, banks, clients);
+
+                foreach (var item in result)
+                {
+                    Console.WriteLine(item);
+                }
             }
-
-
 
 
             Console.ReadLine();
