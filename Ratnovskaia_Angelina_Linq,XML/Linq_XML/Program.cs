@@ -1,89 +1,55 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-using System.Text.RegularExpressions;
+using  System.Xml.Serialization;
 
 namespace Linq_XML
 {
-    class Program
+    internal class Program
     {
-        static IEnumerable<object> Search(string s, List<Bank> banks, List<Client> clients)
-        {
-            if (s != null)
-            {              
-                var queryClients =
-                     from cl in clients
-                     where (cl.Lastname.Contains(s)||cl.Name.Contains(s)||(cl.Middlename != null && cl.Middlename.Contains(s)))
-                     select cl;
 
-                if (!queryClients.Any())
-                {
-                    var queryBanks =
-                        from bank in banks
-                        where (bank.Name.Contains(s))
-                        select bank;
-                    return queryBanks;
-                }
-                return queryClients;
-
-            }
-            return null;
-
-
-        } 
         static void Main()
         {
-            string text = System.IO.File.ReadAllText(@"D:\input.txt");
-            var pattern1 = @"Банк: ";
-            var pattern2 = @"Клиент: ";
-
-
-            List<string> elements = Regex.Split(text, pattern1).ToList();
-            elements.RemoveAll(element => element == "");
 
             var banks = new List<Bank>();
             var clients = new List<Client>();
 
-            foreach (var element in elements)
+            Helper.Parse(@"input.txt", ref banks, ref clients);
+
+            Console.WriteLine("Введите строку для поиска:");
+
+            var str = Console.ReadLine();
+            var result = Helper.Search(str, banks, clients);
+
+            var bankList = new List<Bank>();
+            var clientList = new List<Client>();
+
+           
+            foreach (var element in result)
             {
-               var items = Regex.Split(element, pattern2);
+                var temp1 = element as Client;
+                var temp2 = element as Bank;
 
-                foreach (var item in items)
-                    items[Array.IndexOf(items, item)] = item.Trim();
-
-                var bank = new Bank(items[0]);
-                banks.Add(bank);
-                for (var i = 1; i < items.Length; i++)
+                if (temp1 != null)
                 {
+                    clientList.Add(temp1);
+                }
 
-                    string[] attributes = items[i].Split(',');
-                    string[] fullName = attributes[0].Split(' ');
-                    var client = new Client(fullName[0].Trim(), fullName[1].Trim()) { Bank = bank, Birthday = attributes[1].Trim()};
-                    if (fullName.Length >= 3) client.Middlename = fullName[2];
-                    bank.Clients.Add(client);
-                    clients.Add(client);
-
+                if (temp2 != null)
+                {
+                    bankList.Add(temp2);
                 }
             }
 
-            var readLine = Console.ReadLine();
-            if (readLine != null)
-            {
-                var s = readLine.Trim();
-                var result = Search(s, banks, clients);
+            File.Delete("serialization.xml");
+            var stream = new FileStream("serialization.xml", FileMode.Append);
 
-                foreach (var item in result)
-                {
-                    Console.WriteLine(item);
-                }
-            }
+            var clientSerializer = new XmlSerializer(typeof(List<Client>));
+            var bankSerializer = new XmlSerializer(typeof(List<Bank>));
 
-
-            Console.ReadLine();
+            clientSerializer.Serialize(stream, clientList);
+            bankSerializer.Serialize(stream, bankList);
 
         }
     }

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<ArrayOfClient xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Client>
+    <BankName>Лето</BankName>
+    <Name>Сергей</Name>
+    <Lastname>Васильев</Lastname>
+    <Middlename>Григорьевич</Middlename>
+    <Birthday>21.02.2016</Birthday>
+  </Client>
+  <Client>
+    <BankName>Тинькофф</BankName>
+    <Name>Сергей</Name>
+    <Lastname>Васильев</Lastname>
+    <Middlename>Григорьевич</Middlename>
+    <Birthday>21.02.2016</Birthday>
+  </Client>
+</ArrayOfClient><?xml version="1.0"?>
+<ArrayOfBank xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
