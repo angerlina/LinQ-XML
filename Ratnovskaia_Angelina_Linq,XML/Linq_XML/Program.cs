@@ -39,6 +39,7 @@ namespace Linq_XML
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+                Console.ReadKey();
             }
         }
     }
