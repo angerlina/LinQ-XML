@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -7,13 +6,11 @@ namespace Linq_XML
 {
     internal class Helper
     {
-
         internal static void Parse(string path, ref List<Bank> banks, ref List<Client> clients)
         {
             var text = System.IO.File.ReadAllText(path);
             const string pattern1 = @"Банк: ";
             const string pattern2 = @"Клиент: ";
-
 
             var elements = Regex.Split(text, pattern1).ToList();
 
@@ -44,25 +41,28 @@ namespace Linq_XML
 
                 }
             }
-
         }
 
-        internal static IEnumerable<object> Search(string str, List<Bank> banks, List<Client> clients)
+        internal static List<Client> ClientSearch(string str, List<Client> clients)
         {
-            if (str == null) return null;
             var filter = str.ToLower();
-            var queryClients =
+            var query =
                 from cl in clients
                 where (cl.Lastname.ToLower().Contains(filter) || cl.Name.ToLower().Contains(filter) || (cl.Middlename != null && cl.Middlename.ToLower().Contains(filter)))
                 select cl;
+            return query.ToList();
 
-            var enumerable = queryClients as IList<Client> ?? queryClients.ToList();
-            if (enumerable.Any()) return enumerable;
-            var queryBanks =
+        }
+
+        internal static List<Bank> BankSearch(string str, List<Bank> banks)
+        {
+            var filter = str.ToLower();
+            var query =
                 from bank in banks
                 where (bank.Name.ToLower().Contains(filter))
                 select bank;
-            return queryBanks;
+            return query.ToList();
+
         }
     }
 }

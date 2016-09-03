@@ -8,10 +8,8 @@ namespace Linq_XML
 {
     internal class Program
     {
-
         static void Main()
         {
-
             var banks = new List<Bank>();
             var clients = new List<Client>();
 
@@ -20,36 +18,21 @@ namespace Linq_XML
             Console.WriteLine("Введите строку для поиска:");
 
             var str = Console.ReadLine();
-            var result = Helper.Search(str, banks, clients);
 
-            var bankList = new List<Bank>();
-            var clientList = new List<Client>();
+            var stream = new FileStream("serialization.xml", FileMode.Create, FileAccess.ReadWrite);         
+            var result = Helper.ClientSearch(str, clients);
 
-           
-            foreach (var element in result)
+            if (result.Any())
             {
-                var temp1 = element as Client;
-                var temp2 = element as Bank;
-
-                if (temp1 != null)
-                {
-                    clientList.Add(temp1);
-                }
-
-                if (temp2 != null)
-                {
-                    bankList.Add(temp2);
-                }
+                var clientSerializer = new XmlSerializer(typeof(List<Client>));
+                clientSerializer.Serialize(stream, result);
             }
 
-            File.Delete("serialization.xml");
-            var stream = new FileStream("serialization.xml", FileMode.Append);
-
-            var clientSerializer = new XmlSerializer(typeof(List<Client>));
-            var bankSerializer = new XmlSerializer(typeof(List<Bank>));
-
-            clientSerializer.Serialize(stream, clientList);
-            bankSerializer.Serialize(stream, bankList);
+        else
+            {
+                var bankSerializer = new XmlSerializer(typeof(List<Bank>));
+                bankSerializer.Serialize(stream, Helper.BankSearch(str, banks));
+            }   
 
         }
     }
