@@ -7,6 +7,7 @@ namespace Linq_XML
 {
     internal class Helper
     {
+        // Считывает текстовый файл и парсит его на клиенты и банки
         internal static void Parse(string path, ref List<Bank> banks, ref List<Client> clients)
         {
             var text = File.ReadAllText(path);
@@ -45,6 +46,7 @@ namespace Linq_XML
             }
         }
 
+        // Фильтр по полям клиента
         internal static List<Client> ClientSearch(string str, List<Client> clients)
         {
             var filter = str.ToLower();
@@ -56,7 +58,7 @@ namespace Linq_XML
                 select cl;
             return query.ToList();
         }
-
+        // Фильтр по полям банка.
         internal static List<Bank> BankSearch(string str, List<Bank> banks)
         {
             var filter = str.ToLower();
