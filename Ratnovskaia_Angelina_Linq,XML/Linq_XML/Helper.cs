@@ -6,6 +6,7 @@ namespace Linq_XML
 {
     internal class Helper
     {
+
         internal static void Parse(string path, ref List<Bank> banks, ref List<Client> clients)
         {
             var text = System.IO.File.ReadAllText(path);
@@ -34,11 +35,10 @@ namespace Linq_XML
 
                     var attributes = items[i].Split(',');
                     var fullName = attributes[0].Split(' ');
-                    var client = new Client(fullName[0].Trim(), fullName[1].Trim()) { Bank = bank, Birthday = attributes[1].Trim() };
+                    var client = new Client(fullName[0].Trim(), fullName[1].Trim()) { BankName = bank.Name, Birthday = attributes[1].Trim() };
                     if (fullName.Length >= 3) client.Middlename = fullName[2];
                     bank.Clients.Add(client);
                     clients.Add(client);
-
                 }
             }
         }

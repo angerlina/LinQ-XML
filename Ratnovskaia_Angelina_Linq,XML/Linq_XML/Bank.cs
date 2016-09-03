@@ -17,8 +17,6 @@ namespace Linq_XML
 
         public string Name { get; set; }
 
-
         public List<Client> Clients { get; set; }
-
     }
 }

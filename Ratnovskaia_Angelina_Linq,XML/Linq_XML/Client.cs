@@ -14,24 +14,10 @@ namespace Linq_XML
         {
         }
 
-        public string BankName
-        {
-            get { return Bank.Name; }
-            set { Bank.Name = value; }
-        }
-
+        public string BankName { get; set; }
         public string Name { get; set; }
         public string Lastname { get; set; }
-
-
         public string Middlename { get; set; }
-
         public string Birthday { get; set; }
-
-        [XmlIgnore]
-        public Bank Bank;
-
-        
-
     }
 }
