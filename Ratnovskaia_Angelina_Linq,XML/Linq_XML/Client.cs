@@ -1,6 +1,4 @@
-﻿using  System.Xml.Serialization;
-
-namespace Linq_XML
+﻿namespace Linq_XML
 {
     public class Client
     {

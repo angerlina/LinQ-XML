@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using  System.Xml.Serialization;
+using System.Xml.Serialization;
 
 namespace Linq_XML
 {
     internal class Program
     {
-        static void Main()
+        private static void Main()
         {
             try
             {
